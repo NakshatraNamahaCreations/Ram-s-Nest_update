@@ -1,0 +1,34 @@
+@media screen and (max-width: 600px) {
+  .input-group {
+    width: 100% !important;
+  }
+  .button-views {
+    justify-content: center;
+  }
+  .all-type-button {
+    width: 30%;
+  }
+  .calender-view {
+    width: auto;
+  }
+  .timing {
+    margin: 0px 0px 0px 0px;
+  }
+  .history-left {
+    margin: 1rem;
+  }
+  /* .place-order-section {
+    padding: 17px 0px 17px 110px;
+  } */
+}
+
+@media screen and (max-width: 375px) {
+  .place-order-section {
+    padding: 10px 0px 10px 138px;
+  }
+}
+@media screen and (max-width: 320px) {
+  .place-order-section {
+    padding: 10px 0px 10px 110px;
+  }
+}

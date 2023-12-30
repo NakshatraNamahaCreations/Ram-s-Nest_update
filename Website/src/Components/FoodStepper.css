@@ -1,0 +1,64 @@
+/* Stepper styles */
+.food-stepper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.step {
+  position: relative;
+}
+
+.dot {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-weight: bold;
+  box-shadow: 0px 0px 3px 1px #0000003d;
+  border: 1px solid rgb(23 37 57 / 0%);
+}
+
+/* .line1 {
+  flex: 1;
+  height: 2px;
+  background-color: #050505;
+  position: relative;
+  top: -15px;
+  left: 100%;
+  transform: translateX(-50%);
+} */
+.line1 {
+  flex: 1;
+  height: 2px;
+  background-color: #050505;
+  position: relative;
+  top: -15px;
+  /* left: 93%; */
+  left: 111%;
+  transform: translateX(-50%);
+}
+.line2 {
+  flex: 1;
+  height: 2px;
+  background-color: #050505;
+  position: relative;
+  top: -15px;
+  /* left: 93%; */
+  left: 108%;
+  transform: translateX(-50%);
+}
+.line3 {
+  flex: 1;
+  height: 2px;
+  background-color: #050505;
+  position: relative;
+  top: -15px;
+  width: 139%;
+  left: 159%;
+  transform: translateX(-50%);
+}
