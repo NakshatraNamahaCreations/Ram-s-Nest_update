@@ -44,10 +44,10 @@ function Sidebar() {
                 Foods<Link to="/food"></Link>
               </MenuItem>
               <MenuItem>
-                Foods order<Link to="/customerorder"></Link>
+                Foods order<Link to="/customer-order-history"></Link>
               </MenuItem>
             </SubMenu>
-            <SubMenu title="Rooms" icon={<FaGem />}>
+            {/* <SubMenu title="Rooms" icon={<FaGem />}>
               <MenuItem>
                 Category<Link to="/roomcat"></Link>
               </MenuItem>
@@ -57,7 +57,7 @@ function Sidebar() {
               <MenuItem>
                 Rooms Bookings<Link to="/hotelbooking"></Link>
               </MenuItem>
-            </SubMenu>
+            </SubMenu> */}
             <SubMenu title="Packages" icon={<FaGem />}>
               <MenuItem>
                 Packages<Link to="/package"></Link>
@@ -67,9 +67,9 @@ function Sidebar() {
               </MenuItem>
             </SubMenu>
 
-            <MenuItem icon={<FaCamera />}>
+            {/* <MenuItem icon={<FaCamera />}>
               Notification<Link to="/notification"></Link>
-            </MenuItem>
+            </MenuItem> */}
 
             <MenuItem icon={<FaUser />}>
               Customers<Link to="/customer"></Link>

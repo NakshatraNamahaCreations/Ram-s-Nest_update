@@ -101,6 +101,16 @@ input:focus {
   font-size: 1rem;
   color: #6471a4;
 }
+.print-invoice-text {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  color: #0d6efd;
+  cursor: pointer;
+}
+.print-invoice-text:hover {
+  color: #5695f3;
+}
 .order-menu img {
   width: 5.313rem;
   height: 5.313rem;
@@ -110,4 +120,85 @@ input:focus {
 }
 .customer-order-sde {
   font-size: 17px;
+}
+/* dashbaord */
+.card-dashboard {
+  margin-bottom: 1.875rem;
+  background-color: #fff;
+  transition: all 0.5s ease-in-out;
+  position: relative;
+  border: 0px solid transparent;
+  border-radius: 0.5rem;
+  box-shadow: 0px 0px 13px 0px rgba(82, 63, 105, 0.05);
+  height: calc(100% - 30px);
+  background: linear-gradient(to right, #ea7a9a 0%, #fac7b6 100%);
+}
+.media-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.card-dash-body {
+  padding: 1.875rem;
+}
+.dash-font-w600 {
+  font-size: 40px;
+}
+.dash-font-icon {
+  background-color: white;
+  padding: 17px;
+  color: #ea7e9b;
+  border-radius: 50%;
+  width: 62px;
+  height: 62px;
+  /* text-align: center; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+}
+.invoice-format {
+  border: 1px solid gray;
+}
+.invoice-col-det-left {
+  /* text-align: end; */
+  font-weight: 500;
+  font-size: 14px;
+}
+.invoice-col-det-right {
+  /* text-align: left; */
+  font-weight: 500;
+  font-size: 14px;
+}
+.invoice-col-det-final-left {
+  text-align: end;
+  font-weight: 500;
+  font-size: 14px;
+}
+.invoice-col-det-final-right {
+  text-align: left;
+  /* font-weight: 500; */
+  font-size: 14px;
+}
+.invois-order {
+  justify-content: space-around;
+}
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print-section,
+  .print-section * {
+    visibility: visible;
+  }
+  .print-section {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  /* Hide default headers and footers */
+  @page {
+    size: auto; /* Use 'auto' to let the browser determine the size */
+    margin: 3mm; /* Set margins to zero */
+  }
 }

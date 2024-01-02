@@ -21,13 +21,41 @@ function Customers() {
     getcustomer();
   }, []);
 
+  // const getcustomer = () => {
+  //   try {
+  //     axios
+  //       .get("https://api.ramsnesthomestay.com/api/allcustomer")
+  //       .then(function (response) {
+  //         if (response.status === 200) {
+  //           setdata(response.data.customers);
+  //           return;
+  //         } else {
+  //           alert("Can't able to fetch ");
+  //           //setdatacondition(true);
+  //           return;
+  //         }
+  //       })
+  //       .catch(function (error) {
+  //         // setdatacondition(true);
+
+  //         alert("Can't able to fetch ");
+  //         return;
+  //       });
+  //   } catch (error) {
+  //     console.warn(error);
+  //     alert("Can't able  to fetch ");
+  //     // setdatacondition(true);
+  //     return error;
+  //   }
+  // };
+
   const getcustomer = () => {
     try {
       axios
-        .get("https://api.ramsnesthomestay.com/api/allcustomer")
+        .get("https://api.ramsnesthomestay.com/api/orders/getcustomerbooking")
         .then(function (response) {
           if (response.status === 200) {
-            setdata(response.data.customers);
+            setdata(response.data.customerDetails);
             return;
           } else {
             alert("Can't able to fetch ");
@@ -50,7 +78,7 @@ function Customers() {
   };
 
   const customTotal = (from, to, size) => (
-    <span className="react-bootstrap-table-pagination-total">
+    <span className="react-bootstrap-table-pagination-total ms-2">
       Showing {from} to {to} of {size} Results
     </span>
   );
@@ -89,33 +117,23 @@ function Customers() {
   const columns = [
     {
       dataField: "_id",
-      text: "CustomerId",
+      text: "Customer Id",
       sort: true,
     },
     {
-      dataField: "name",
-      text: "Name",
+      dataField: "guestName",
+      text: "Customer Name",
       sort: true,
     },
     {
-      dataField: "email",
+      dataField: "guestEmail",
       text: "Email",
       sort: true,
     },
     {
-      dataField: "",
-      text: "Usertype",
-      formatter: (cell, row) => {
-        return (
-          <div>
-            <p>Email</p>
-          </div>
-        );
-      },
-    },
-    {
-      dataField: "phonenumber",
-      text: "Mobile No",
+      dataField: "mobileNumber",
+      text: "Mobile Number",
+      sort: true,
     },
   ];
   return (
@@ -128,6 +146,7 @@ function Customers() {
         <div className="col-md-10">
           <div className="magin">
             <h4>Customers</h4>
+            <br />
             <ToolkitProvider
               keyField="id"
               data={data}
@@ -140,15 +159,15 @@ function Customers() {
             >
               {(props) => (
                 <div>
-                  <span className="pr-5 mr-auto">
+                  {/* <span className="pr-5 mr-auto">
                     <ExportCSVButton
                       className="btn-outline-success"
                       {...props.csvProps}
                     >
                       Export to CSV
                     </ExportCSVButton>
-                  </span>
-                  <span className="pl-5 ml-5 mr-5 mt-5">
+                  </span> */}
+                  <span className="pl-5 me-5 mt-5">
                     <SearchBar
                       className="form-control "
                       {...props.searchProps}
@@ -158,8 +177,9 @@ function Customers() {
                     className="btn-outline-info"
                     {...props.searchProps}
                   />
-
-                  <hr />
+                  <br />
+                  <br />
+                  {/* <hr /> */}
                   <div className="table-responsive">
                     <BootstrapTable
                       keyField="customer"
