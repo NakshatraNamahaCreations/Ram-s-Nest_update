@@ -372,7 +372,7 @@ function Rooms() {
                   // boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
                 }}
               >
-                <h5 className="pt-5"> Edit food</h5>
+                <h5 className="pt-5"> Edit</h5>
 
                 <div>
                   <lable className="mt-3">Select Category</lable>
@@ -447,7 +447,7 @@ function Rooms() {
                   // boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
                 }}
               >
-                <h5 className="pt-5"> Add food</h5>
+                <h5 className="pt-5"> Add Dish</h5>
 
                 <div>
                   <lable className="mt-3">Select Category</lable>

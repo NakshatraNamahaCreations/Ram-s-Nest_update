@@ -117,7 +117,7 @@ function Addfood() {
                   "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
               }}
             >
-              <h5 className="pt-5"> Add food</h5>
+              <h5 className="pt-5"> Add Main Dish</h5>
               <Card.Body>
                 <div className="row me-0">
                   <div className="col-1"></div>

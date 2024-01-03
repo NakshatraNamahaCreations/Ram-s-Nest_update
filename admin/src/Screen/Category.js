@@ -8,10 +8,10 @@ import ToolkitProvider, {
   Search,
   CSVExport,
 } from "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit";
-
 import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
+import { TfiImport } from "react-icons/tfi";
 
 function Category() {
   const imageURL = "https://api.ramsnesthomestay.com";
@@ -115,32 +115,6 @@ function Category() {
         console.log(row);
         return (
           <div>
-            {/* <span>
-              {row.categoryType === "Veg" ? (
-                <>
-                  <i
-                    class="fa-solid fa-circle"
-                    style={{ color: "green", fontSize: "10px" }}
-                  ></i>{" "}
-                </>
-              ) : row.categoryType === "Non Veg" ? (
-                <>
-                  <i
-                    class="fa-solid fa-circle"
-                    style={{ color: "red", fontSize: "10px" }}
-                  ></i>
-                </>
-              ) : row.categoryType === "Common" ? (
-                <>
-                  <i
-                    class="fa-solid fa-circle"
-                    style={{ color: "blue", fontSize: "10px" }}
-                  ></i>
-                </>
-              ) : (
-                ""
-              )}{" "}
-            </span> */}
             <span>{row.categoryname} </span>
           </div>
         );
@@ -274,7 +248,15 @@ function Category() {
             >
               {(props) => (
                 <div className="mt-5">
-                  <span className="pl-5 me-5 mt-5">
+                  {/* <span className="pl-5 me-1 mt-5">
+                    <ExportCSVButton
+                      // className="btn-outline-success"
+                      {...props.csvProps}
+                    >
+                      <TfiImport />
+                    </ExportCSVButton>
+                  </span> */}
+                  <span className="pl-5 me-1 mt-5">
                     <SearchBar
                       className="form-control "
                       {...props.searchProps}

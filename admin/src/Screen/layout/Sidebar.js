@@ -18,6 +18,7 @@ import {
   FaRegLaughWink,
   FaHeart,
 } from "react-icons/fa";
+import { VscBrowser } from "react-icons/vsc";
 
 function Sidebar() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -41,13 +42,13 @@ function Sidebar() {
                 Subcategory<Link to="/subcategory"></Link>
               </MenuItem> */}
               <MenuItem>
-                Foods<Link to="/food"></Link>
-              </MenuItem>
-              <MenuItem>
-                Foods order<Link to="/customer-order-history"></Link>
+                Main Dish<Link to="/food"></Link>
               </MenuItem>
             </SubMenu>
-            {/* <SubMenu title="Rooms" icon={<FaGem />}>
+            <MenuItem icon={<VscBrowser />}>
+              Order List<Link to="/customer-order-history"></Link>
+            </MenuItem>
+            <SubMenu title="Rooms" icon={<FaGem />}>
               <MenuItem>
                 Category<Link to="/roomcat"></Link>
               </MenuItem>
@@ -57,7 +58,7 @@ function Sidebar() {
               <MenuItem>
                 Rooms Bookings<Link to="/hotelbooking"></Link>
               </MenuItem>
-            </SubMenu> */}
+            </SubMenu>
             <SubMenu title="Packages" icon={<FaGem />}>
               <MenuItem>
                 Packages<Link to="/package"></Link>
