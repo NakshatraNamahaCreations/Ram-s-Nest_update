@@ -24,7 +24,7 @@ class food {
 
   //get
   async getBookings(req, res) {
-    let customer = await customerOrderModel.find({}).sort({ _id: -1 });
+    let customer = await customerOrderModel.find({});
     if (customer) {
       return res.status(200).json({ customerDetails: customer });
     } else {

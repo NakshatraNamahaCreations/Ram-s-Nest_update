@@ -64,7 +64,7 @@ app.use("/api/payment", paymentGetWay);
 app.use("/api/orders", customerOrderBookings);
 // app.use("/api/orders", orderBookings);
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8800;
 app.listen(PORT, () => {
   console.log("Server is running on ", PORT);
 });

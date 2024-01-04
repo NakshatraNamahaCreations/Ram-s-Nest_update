@@ -100,7 +100,7 @@ function Home() {
       <div className="row mt-3">
         <div className="col-md-6">
           <div class="m-2">
-            {/* <h4 className="mb-3">Welcome {user.guestName}! </h4> */}
+            <h4 className="mb-3">Welcome {user.guestName}! </h4>
             {/* <div>
               <div className="mt-2">
                 <div
@@ -242,7 +242,8 @@ function Home() {
                     <div className="card-inner-behaviour">
                       <div className="text-center">
                         <img
-                          src="/img/default_category.png"
+                          className="categoryaImagecss"
+                          src={`https://api.ramsnesthomestay.com/category/${items.categoryimage}`}
                           alt="default_category"
                         />
                         <br />
@@ -272,7 +273,8 @@ function Home() {
                       <div className="card-inner-behaviour">
                         <div className="text-center">
                           <img
-                            src="/img/default_category.png"
+                            className="categoryaImagecss"
+                            src={`https://api.ramsnesthomestay.com/category/${items.categoryimage}`}
                             alt="default_category"
                           />
                           <br />
@@ -302,7 +304,8 @@ function Home() {
                       <div className="card-inner-behaviour">
                         <div className="text-center">
                           <img
-                            src="/img/default_category.png"
+                            className="categoryaImagecss"
+                            src={`https://api.ramsnesthomestay.com/category/${items.categoryimage}`}
                             alt="default_category"
                           />
                           <br />

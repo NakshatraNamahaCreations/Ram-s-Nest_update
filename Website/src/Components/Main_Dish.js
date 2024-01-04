@@ -13,6 +13,7 @@ import {
 } from "./actions";
 import axios from "axios";
 import moment from "moment";
+import transitions from "@material-ui/core/styles/transitions";
 // import { WebView } from "react-webview";
 
 function Main_Dish() {
@@ -49,7 +50,7 @@ function Main_Dish() {
 
   useEffect(() => {
     getallfoods();
-    getAllOrderDetails();
+    // getAllOrderDetails();
   }, []);
 
   const getallfoods = async () => {
@@ -62,15 +63,15 @@ function Main_Dish() {
     }
   };
 
-  const getAllOrderDetails = async () => {
-    let res = await axios.get(
-      `https://api.ramsnesthomestay.com/api/orders/getparticularcustomerbookingdetails/${user._id}`
-    );
-    if (res.status === 200) {
-      console.log("customerOrders", res.data);
-      setCustomerOrders(res.data?.particulatUser);
-    }
-  };
+  // const getAllOrderDetails = async () => {
+  //   let res = await axios.get(
+  //     `https://api.ramsnesthomestay.com/api/orders/getparticularcustomerbookingdetails/${user._id}`
+  //   );
+  //   if (res.status === 200) {
+  //     console.log("customerOrders", res.data);
+  //     setCustomerOrders(res.data?.particulatUser);
+  //   }
+  // };
 
   // console.log("allFood", allFood);
 
@@ -264,182 +265,6 @@ function Main_Dish() {
   // console.log("selectedDishes", Object.keys(selectedDishes).length);
   // console.log("totalAmount", totalAmount.toFixed(2));
 
-  // const preceedPayment = async () => {
-  //   try {
-  //     const res = await axios.post(
-  //       "https://api.ramsnesthomestay.com/api/payment/addpayment",
-  //       {
-  //         // ... (your payment request data)
-  //       }
-  //     );
-
-  //     if (res.status === 200) {
-  //       const { base64, sha256encode, merchantTransactionId, redirectUrl } =
-  //         res.data;
-
-  //       // You can store payment-related data in the state
-  //       setTransaction(merchantTransactionId);
-  //       setPaymentUrl(redirectUrl);
-
-  //       // Open a new window with the payment gateway URL
-  //       const paymentWindow = window.open(redirectUrl, "_blank");
-
-  //       // Optional: You can focus on the new window
-  //       if (paymentWindow) {
-  //         paymentWindow.focus();
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.log(error.response);
-  //     if (error.response) {
-  //       alert(error.response.data.error);
-  //       console.log(error.response.data.error);
-  //     }
-  //   }
-  // };
-  const [showPhonePeIframe, setShowPhonePeIframe] = useState(false);
-  const preceedPayment = async (e) => {
-    e.preventDefault();
-
-    try {
-      const config = {
-        url: "/payment/addpayment",
-        method: "post",
-        baseURL: "https://api.ramsnesthomestay.com/api",
-        headers: { "content-type": "application/json" },
-        data: {
-          amount: totalAmount,
-          // orderId: generateOrderId(),
-        },
-      };
-      const res = await axios(config);
-      console.log(res.status);
-
-      if (res.status === 200) {
-        console.log("yogi", res);
-        const base64ResponseData = res.data.base64;
-        const sha256ResponseData = res.data.sha256encode;
-        const merchantId = res.data.merchantId;
-        const merchantTransactionId = res.data.merchantTransactionId;
-        const redirectUrl = res.data.redirectUrl;
-        setTransaction(res.data.merchantTransactionId);
-        // setShowWebView(true);
-        setShowPhonePeIframe(true);
-        initiatePayment(
-          base64ResponseData,
-          sha256ResponseData,
-          merchantId,
-          merchantTransactionId,
-          redirectUrl
-        );
-      }
-    } catch (error) {
-      console.log(error.response);
-      if (error.response) {
-        alert(error.response.data.error);
-        console.log(error.response.data.error);
-      }
-    }
-  };
-
-  const initiatePayment = async (
-    base64Data,
-    sha256Data,
-    merchantId,
-    merchantTransactionId,
-    redirectUrl
-  ) => {
-    try {
-      const data = JSON.stringify({
-        request: base64Data,
-      });
-
-      const config = {
-        method: "post",
-        url: "https://api.phonepe.com/apis/hermes/pg/v1/pay",
-        headers: {
-          "Content-Type": "application/json",
-          "X-VERIFY": sha256Data,
-        },
-        data: data,
-      };
-
-      const response = await axios.request(config);
-
-      const { redirectInfo } = response.data.data.instrumentResponse;
-      setPaymentUrl(redirectInfo.url);
-      setShowWebView(true);
-      setIsCheckingStatus(true);
-    } catch (error) {
-      console.error("Error initiating payment:", error);
-      // Handle the error accordingly
-    }
-  };
-
-  const handleNavigationStateChange = (newNavState) => {
-    const { url } = newNavState;
-    console.log("url", url);
-
-    if (url.startsWith("ibv://")) {
-      setShowWebView(false);
-      window.location.assign("paymentsuceess");
-      if (url.startsWith("ibv://paymentsuceess")) {
-        window.location.assign("paymentsuceess");
-      } else if (url.startsWith("ibv://paymentsuceess")) {
-        window.location.assign("paymentsuceess");
-      } else {
-        alert("Unsupported URL scheme: " + url);
-        setShowWebView(false);
-      }
-    } else {
-      setRedirectUrl(url);
-      window.location.assign("paymentsuceess");
-    }
-  };
-
-  const [isCheckingStatus, setIsCheckingStatus] = useState(false);
-
-  useEffect(() => {
-    if (isCheckingStatus) {
-      const intervalId = setInterval(() => {
-        checkTransactionStatus();
-      }, 3000);
-
-      return () => clearInterval(intervalId);
-    }
-  }, [isCheckingStatus]);
-
-  const userId = "yg8f4387t48tg3984f34t";
-  const checkTransactionStatus = async () => {
-    const merchantId = "M1KSO0OLXGKZ";
-    try {
-      const config = {
-        url: `/payment/status/${merchantId}/${Transaction}/${userId}`,
-        method: "post",
-        baseURL: "http://192.168.1.103:8000/api",
-        headers: { "content-type": "application/json" },
-        data: {},
-      };
-      const res = await axios(config);
-      console.log(res.status);
-
-      if (res.status === 200) {
-        console.log("response", res.data);
-        const responseData = res.data.responseData;
-        const code = responseData.code;
-        if (code === "PAYMENT_SUCCESS") {
-          setIsCheckingStatus(false);
-          setShowWebView(false);
-          window.location.assign("paymentsuceess");
-        } else {
-          window.location.assign("/");
-        }
-      }
-    } catch (error) {
-      console.error("Error checking transaction status:", error);
-    }
-  };
-
   return (
     <div className="container mt-2">
       <div className="row mt-4">
@@ -452,114 +277,129 @@ function Main_Dish() {
             <i class="fa-solid fa-chevron-left"></i> Back
           </div>
         </div> */}
-        <div className="col-md-8">
-          <div className="row mb-4">
-            <div className="col-md-6">
-              <h4
-                className="select-menu-heading"
-                style={{ color: dishType === "Veg" ? "#198754" : "#dc3545" }}
-              >
-                {name.charAt(0).toUpperCase() + name.slice(1)}{" "}
-              </h4>
-            </div>
-            <div className="col-md-6">
-              <input
-                className="searc-input"
-                placeholder="Search..."
-                onChange={(e) => setSearchMenu(e.target.value)}
+        {searchResults.length < 0 ||
+        searchResults.length === 0 ||
+        !searchResults ? (
+          <>
+            <div className="no-available">
+              <img
+                src="/No-dish-available.png"
+                alt="none"
+                style={{ width: "25%" }}
               />
+              <p className="m-3">No Items</p>
             </div>
-          </div>
-          {searchResults.map((ele, index) => (
-            <div key={index} className="p-2 category-card">
-              <div className="main-dish-behaviour">
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <img
-                    src={`https://api.ramsnesthomestay.com/food/${ele.foodimage}`}
-                    alt=""
-                    style={{
-                      width: "60px",
-                      height: "60px",
-                      borderRadius: "50px",
-                    }}
-                  />
-                  <h5 className="inner-title-main-dish"> {ele.foodname}</h5>
-                </div>
-                <div>
-                  <h5 className="inner-title-main-dish">
-                    {" "}
-                    ₹ {ele.foodprice.toFixed(2)}{" "}
-                  </h5>
-                  {countByDish[ele._id] === undefined ||
-                  countByDish[ele._id] === 0 ? (
-                    <Button
-                      variant={
-                        dishType === "Veg"
-                          ? "outline-success"
-                          : "outline-danger"
-                      }
-                      size="sm"
-                      onClick={() => {
-                        AddCount(
-                          ele._id,
-                          ele.foodname,
-                          ele.foodprice,
-                          ele.foodimage
-                        );
-                      }}
-                    >
-                      Add +
-                    </Button>
-                  ) : (
-                    <div>
-                      <span>
-                        <Button
-                          variant={
-                            dishType === "Veg"
-                              ? "outline-success"
-                              : "outline-danger"
-                          }
-                          size="sm"
-                          onClick={() =>
-                            handleDecreaseCount(
-                              ele._id,
-                              ele.foodname,
-                              ele.foodprice,
-                              ele.foodimage
-                            )
-                          }
-                        >
-                          -
-                        </Button>
-                      </span>
-                      <span
-                        className="m-2 inner-title-main-dish-cout"
-                        style={{
-                          color: dishType === "Veg" ? "#198754" : "#dc3545",
-                        }}
-                      >
-                        {countByDish[ele._id]}
-                      </span>
-                      <span>
-                        <Button
-                          variant={
-                            dishType === "Veg"
-                              ? "outline-success"
-                              : "outline-danger"
-                          }
-                          size="sm"
-                          onClick={() => handleIncreaseCount(ele._id)}
-                        >
-                          +
-                        </Button>
-                      </span>
-                    </div>
-                  )}
-                </div>
+          </>
+        ) : (
+          <div className="col-md-8">
+            <div className="row mb-4">
+              <div className="col-md-6">
+                <h4
+                  className="select-menu-heading"
+                  style={{ color: dishType === "Veg" ? "#198754" : "#dc3545" }}
+                >
+                  {name.charAt(0).toUpperCase() + name.slice(1)}{" "}
+                </h4>
+              </div>
+              <div className="col-md-6">
+                <input
+                  className="searc-input"
+                  placeholder="Search..."
+                  onChange={(e) => setSearchMenu(e.target.value)}
+                />
               </div>
             </div>
-          ))}
-        </div>
+            {searchResults.map((ele, index) => (
+              <div key={index} className="p-2 category-card">
+                <div className="main-dish-behaviour">
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <img
+                      src={`https://api.ramsnesthomestay.com/food/${ele.foodimage}`}
+                      alt=""
+                      style={{
+                        width: "60px",
+                        height: "60px",
+                        borderRadius: "50px",
+                      }}
+                    />
+                    <h5 className="inner-title-main-dish"> {ele.foodname}</h5>
+                  </div>
+                  <div>
+                    <h5 className="inner-title-main-dish">
+                      {" "}
+                      ₹ {ele.foodprice.toFixed(2)}{" "}
+                    </h5>
+                    {countByDish[ele._id] === undefined ||
+                    countByDish[ele._id] === 0 ? (
+                      <Button
+                        variant={
+                          dishType === "Veg"
+                            ? "outline-success"
+                            : "outline-danger"
+                        }
+                        size="sm"
+                        onClick={() => {
+                          AddCount(
+                            ele._id,
+                            ele.foodname,
+                            ele.foodprice,
+                            ele.foodimage
+                          );
+                        }}
+                      >
+                        Add +
+                      </Button>
+                    ) : (
+                      <div>
+                        <span>
+                          <Button
+                            variant={
+                              dishType === "Veg"
+                                ? "outline-success"
+                                : "outline-danger"
+                            }
+                            size="sm"
+                            onClick={() =>
+                              handleDecreaseCount(
+                                ele._id,
+                                ele.foodname,
+                                ele.foodprice,
+                                ele.foodimage
+                              )
+                            }
+                          >
+                            -
+                          </Button>
+                        </span>
+                        <span
+                          className="m-2 inner-title-main-dish-cout"
+                          style={{
+                            color: dishType === "Veg" ? "#198754" : "#dc3545",
+                          }}
+                        >
+                          {countByDish[ele._id]}
+                        </span>
+                        <span>
+                          <Button
+                            variant={
+                              dishType === "Veg"
+                                ? "outline-success"
+                                : "outline-danger"
+                            }
+                            size="sm"
+                            onClick={() => handleIncreaseCount(ele._id)}
+                          >
+                            +
+                          </Button>
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
         <div className="col-md-4">
           <div className="order-sections">
             {/* <div className="calendar-container mb-3">
@@ -648,16 +488,6 @@ function Main_Dish() {
         source={{ uri: paymentUrl }}
         onload={handleNavigationStateChange}
       /> */}
-      {showPhonePeIframe && (
-        <iframe
-          title="PhonePe Payment"
-          src={paymentUrl}
-          width="100%"
-          height="600px" // Adjust the height as needed
-          frameBorder="0"
-          allowFullScreen
-        />
-      )}
 
       {/* {Object.values(countByDish).some((count) => count > 0) && (
         <div className="view-cart-button">

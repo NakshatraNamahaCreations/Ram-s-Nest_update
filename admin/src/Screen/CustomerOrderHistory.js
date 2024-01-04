@@ -15,9 +15,7 @@ function CustomerOrderHistory() {
   const [data, setdata] = useState([]);
   const [pending, setPending] = useState(true);
   const apiURL = "https://api.ramsnesthomestay.com/api";
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [reversing, setReversing] = useState([]);
   const [searchName, setSearchName] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("");
@@ -31,11 +29,12 @@ function CustomerOrderHistory() {
 
       if (response.status === 200) {
         console.log("all orders", response.data);
-        setdata(response.data.customerDetails);
+        setdata(response.data.customerDetails.reverse());
+        setReversing(response.data.customerDetails);
       }
     } catch (error) {
       console.warn(error);
-      alert("Can't able  to fetch ");
+      alert("Can't able to fetch ");
       // setdatacondition(true);
       return error;
     }
@@ -82,6 +81,18 @@ function CustomerOrderHistory() {
     // selectAllRowsItemText: "",
   };
 
+  console.log("reverseArr", data);
+
+  const generatingOrder = (row) => {
+    const findingCustomer = row._id;
+    const findingIndex = filteredData.findIndex(
+      (item) => item._id === findingCustomer
+    );
+    const orderId = filteredData.length - findingIndex;
+    return `#${orderId} `;
+  };
+  // const orderID = generatingOrder()
+
   const columns = [
     {
       name: "Sl.no",
@@ -90,7 +101,7 @@ function CustomerOrderHistory() {
     },
     {
       name: "Order Id",
-      selector: (row) => `#${row._id.slice(-5)}`,
+      selector: (row) => generatingOrder(row),
       sortable: true,
     },
     {
@@ -204,8 +215,8 @@ function CustomerOrderHistory() {
       </div>
       <div className=" col-md-10 v1 row me-0">
         {/* <div className="col-md-2">
-          <Sidebar />
-        </div> */}
+ <Sidebar />
+ </div> */}
 
         <div style={{ padding: "0px 27px 0px 35px" }}>
           <h4 className=" mb-3 mt-3">Order History</h4>
@@ -246,7 +257,7 @@ function CustomerOrderHistory() {
             <DataTable
               columns={columns}
               data={searchResults}
-              //  actions={actionsMemo}
+              // actions={actionsMemo}
               progressPending={pending}
               pagination
               paginationComponentOptions={paginationComponentOptions}

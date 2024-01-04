@@ -237,3 +237,20 @@
   border: 1px solid #fc8019;
   border-radius: 0.625rem;
 }
+.categoryaImagecss {
+  width: 15%;
+}
+.no-available {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: gray;
+}
+.no-available img {
+  filter: grayscale(100%); /* Convert the image to grayscale */
+}

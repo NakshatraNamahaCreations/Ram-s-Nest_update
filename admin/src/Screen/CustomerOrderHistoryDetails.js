@@ -11,11 +11,13 @@ function CustomerOrderHistoryDetails() {
   const [allFood, setAllFoods] = useState([]);
   const [customerOrders, setCustomerOrders] = useState({});
   const [selectedDishes, setSelectedDishes] = useState([]);
-  const [invoiceNumber, setInvoiceNumber] = useState(1);
+  const [data, setdata] = useState([]);
+  const apiURL = "https://api.ramsnesthomestay.com/api";
 
   useEffect(() => {
     getAllOrderDetails();
     getAllFoods();
+    getcustomer();
   }, []);
 
   const getAllOrderDetails = async () => {
@@ -42,6 +44,22 @@ function CustomerOrderHistoryDetails() {
     }
   };
 
+  const getcustomer = async () => {
+    try {
+      const response = await axios.get(`${apiURL}/orders/getcustomerbooking`);
+
+      if (response.status === 200) {
+        console.log("all customers", response.data);
+        console.log("id", id);
+        setdata(response.data.customerDetails);
+      }
+    } catch (error) {
+      console.warn(error);
+      alert("Can't able to fetch ");
+      // setdatacondition(true);
+      return error;
+    }
+  };
   // index value of the objects?
 
   const getAllFoods = async () => {
@@ -54,8 +72,8 @@ function CustomerOrderHistoryDetails() {
     }
   };
   // const totalAmount = selectedDishes.reduce(
-  //   (acc, items) => acc + parseInt(items.price) * parseInt(items.count),
-  //   0
+  // (acc, items) => acc + parseInt(items.price) * parseInt(items.count),
+  // 0
   // );
   const mergedArray = selectedDishes.map((item) => {
     const matchedFood = allFood.find((food) => food.foodname === item.name);
@@ -69,17 +87,34 @@ function CustomerOrderHistoryDetails() {
       foodimage: matchedFood ? matchedFood.foodimage : null,
     };
   });
-  const totalAmount = mergedArray.reduce(
-    (acc, items) => acc + parseInt(items.totalPrice) * parseInt(items.count),
-    0
+  // const totalAmount = mergedArray.reduce(
+  // (acc, items) => acc + parseInt(items.totalPrice) * parseInt(items.count),
+  // 0
+  // );
+
+  console.log("selectedDishes", selectedDishes);
+
+  let initialValue = 0;
+  const totalAmount = selectedDishes.map(
+    (ele) => (initialValue += ele.totalPrice)
+  );
+  console.log();
+
+  const filteredData = data.filter((entry) => entry.selectedDishes.length > 0);
+
+  const findingCustomer = id;
+  const findingIndex = filteredData.findIndex(
+    (item) => item._id === findingCustomer
   );
 
-  function generateNewInvoiceData() {
-    setInvoiceNumber((prevInvoiceNumber) => prevInvoiceNumber + 1);
-    return {
-      invoiceNumber,
-    };
-  }
+  const generatingOrder = () => {
+    if (findingIndex != -1) {
+      return findingIndex + 1;
+    } else {
+      return 0;
+    }
+  };
+  const orderID = generatingOrder();
 
   return (
     <div className="row me-0">
@@ -88,7 +123,7 @@ function CustomerOrderHistoryDetails() {
         <Sidebar />
       </div>
       <div className="col-md-10 v1 mt-5">
-        <h5 className="orderdetails-head">Order Id : #{id.slice(-5)} </h5>
+        <h5 className="orderdetails-head">Order Id : #{orderID} </h5>
         <div>{customerOrders.guestName} </div>
         <div>{customerOrders.mobileNumber} </div>
         <div>
@@ -101,7 +136,6 @@ function CustomerOrderHistoryDetails() {
               className="p-2"
               to={{
                 pathname: `/print-invoice/${id}`,
-                state: { generateNewInvoice: generateNewInvoiceData },
               }}
               style={{
                 textDecoration: "none",
@@ -144,11 +178,11 @@ function CustomerOrderHistoryDetails() {
                   </div>
 
                   {/* <a
-                    href="javascript:void(0);"
-                    class="btn btn-outline-success bgl-success btn-block"
-                  >
-                    Completed
-                  </a> */}
+ href="javascript:void(0);"
+ class="btn btn-outline-success bgl-success btn-block"
+ >
+ Completed
+ </a> */}
                 </div>
               </div>
             </div>
@@ -156,7 +190,7 @@ function CustomerOrderHistoryDetails() {
           <hr />
           <div class="d-flex align-items-center justify-content-between mb-4">
             <h4 class="mb-0">Total</h4>
-            <h4 class="mb-0 text-primary"> {totalAmount.toFixed(2)} </h4>
+            <h4 class="mb-0 text-primary"> {initialValue.toFixed(2)} </h4>
           </div>
         </div>
       </div>

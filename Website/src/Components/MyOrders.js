@@ -9,11 +9,15 @@ function MyOrders() {
   const [myOrders, setMyOrders] = useState({});
   const [selectedDishes, setSelectedDishes] = useState([]);
   const [allFood, setAllFoods] = useState([]);
+  const [data, setdata] = useState([]);
+  const apiURL = "https://api.ramsnesthomestay.com/api";
+
   // const customerOrders = {};
   console.log("user", user);
   useEffect(() => {
     getAllOrderDetails();
     getAllFoods();
+    getcustomer();
   }, []);
 
   const getAllOrderDetails = async () => {
@@ -65,10 +69,47 @@ function MyOrders() {
     };
   });
   console.log("mergedArray", mergedArray);
-  const totalAmount = mergedArray.reduce(
-    (acc, items) => acc + parseInt(items.totalPrice) * parseInt(items.count),
-    0
+
+  // const totalAmount = mergedArray.reduce(
+  //   (acc, items) => acc + parseInt(items.totalPrice) * parseInt(items.count),
+  //   0
+  // );
+
+  let totalAmount = 0;
+  const sumOfTotal = selectedDishes.map(
+    (ele) => (totalAmount += ele.totalPrice)
   );
+
+  const getcustomer = async () => {
+    try {
+      const response = await axios.get(`${apiURL}/orders/getcustomerbooking`);
+
+      if (response.status === 200) {
+        console.log("all customers", response.data);
+        setdata(response.data.customerDetails);
+      }
+    } catch (error) {
+      console.warn(error);
+      console.error("Can't able  to fetch", error);
+      // setdatacondition(true);
+      return error;
+    }
+  };
+  console.log("user._id", user._id);
+  const filteredData = data.filter((entry) => entry.selectedDishes.length > 0);
+  const findingCustomer = user._id;
+  const findingIndex = filteredData.findIndex(
+    (item) => item._id === findingCustomer
+  );
+
+  const generatingOrder = () => {
+    if (findingIndex != -1) {
+      return findingIndex + 1;
+    } else {
+      return 0;
+    }
+  };
+  const orderID = generatingOrder();
 
   return (
     <div>
@@ -76,7 +117,9 @@ function MyOrders() {
         <div className="mt-5">
           <div>
             <h5 className="orderdetails-head text-center">
-              Order#{user._id.slice(-5)}{" "}
+              Order#
+              {orderID}
+              {/* {user._id.slice(-5)}{" "} */}
             </h5>
           </div>
           <div className="order-tracks">

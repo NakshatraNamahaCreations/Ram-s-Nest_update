@@ -26,11 +26,12 @@ function PrintInvoice() {
 
       if (response.status === 200) {
         console.log("all customers", response.data);
+        console.log("id", id);
         setdata(response.data.customerDetails);
       }
     } catch (error) {
       console.warn(error);
-      alert("Can't able  to fetch ");
+      alert("Can't able to fetch ");
       // setdatacondition(true);
       return error;
     }
@@ -69,6 +70,8 @@ function PrintInvoice() {
     }
   };
 
+  console.log("selectedDishes", selectedDishes);
+
   const mergedArray = selectedDishes.map((item) => {
     const matchedFood = allFood.find((food) => food.foodname === item.name);
 
@@ -81,14 +84,20 @@ function PrintInvoice() {
       foodimage: matchedFood ? matchedFood.foodimage : null,
     };
   });
-  const totalAmount = mergedArray.reduce(
-    (acc, items) => acc + parseInt(items.totalPrice) * parseInt(items.count),
-    0
+  // const totalAmount = selectedDishes.reduce(
+  // (acc, items) => acc + parseInt(items.totalPrice) * parseInt(items.count),
+  // 0
+  // );
+  let subTotal = 0;
+  const totalsubTotal = selectedDishes.map(
+    (ele) => (subTotal += ele.totalPrice)
   );
-  //   console.log("mergedArray", mergedArray);
-  const findingTax = (18 / 100) * totalAmount;
-  const grandTotal = totalAmount + findingTax;
-  //   console.log("grandTotal", grandTotal, "findingTax", findingTax);
+
+  // console.log("mergedArray", mergedArray);
+  console.log("subTotal", subTotal);
+  const findingTax = (15 / 100) * subTotal;
+  const grandTotal = subTotal + parseInt(findingTax);
+  // console.log("grandTotal", grandTotal, "findingTax", findingTax);
 
   const columns = [
     {
@@ -109,112 +118,122 @@ function PrintInvoice() {
       selector: (row) => row.totalPrice.toFixed(2),
     },
   ];
+  const filteredData = data.filter((entry) => entry.selectedDishes.length > 0);
 
-  const findingCustomer = customerOrders._id;
-  const findingIndex = data.indexOf(findingCustomer);
+  const findingCustomer = id;
+  const findingIndex = filteredData.findIndex(
+    (item) => item._id === findingCustomer
+  );
 
-  console.log("findingIndex", findingIndex, findingCustomer);
+  const generatingOrder = () => {
+    if (findingIndex != -1) {
+      return findingIndex + 1;
+    } else {
+      return 0;
+    }
+  };
+  const orderID = generatingOrder();
 
-  //   function convertToWords(number) {
-  //     if (number === 0) return "zero";
+  // function convertToWords(number) {
+  // if (number === 0) return "zero";
 
-  //     let str = "";
-  //     let thousands = Math.floor(number / 1000);
-  //     let hundreds = Math.floor((number % 1000) / 100);
-  //     let tensAndOnes = number % 100;
+  // let str = "";
+  // let thousands = Math.floor(number / 1000);
+  // let hundreds = Math.floor((number % 1000) / 100);
+  // let tensAndOnes = number % 100;
 
-  //     if (thousands) {
-  //       str += convertToWords(thousands) + " thousand";
-  //     }
+  // if (thousands) {
+  // str += convertToWords(thousands) + " thousand";
+  // }
 
-  //     if (hundreds) {
-  //       str += " " + convertToWords(hundreds) + " hundred";
-  //     }
+  // if (hundreds) {
+  // str += " " + convertToWords(hundreds) + " hundred";
+  // }
 
-  //     if (tensAndOnes) {
-  //       if (str !== "") {
-  //         str += " and";
-  //       }
-  //       str += " " + convertToWordsLessThanOneHundred(tensAndOnes);
-  //     }
+  // if (tensAndOnes) {
+  // if (str !== "") {
+  // str += " and";
+  // }
+  // str += " " + convertToWordsLessThanOneHundred(tensAndOnes);
+  // }
 
-  //     return str.trim();
-  //   }
+  // return str.trim();
+  // }
 
-  //   function convertToWordsLessThanOneHundred(number) {
-  //     const onesWords = [
-  //       "",
-  //       "one",
-  //       "two",
-  //       "three",
-  //       "four",
-  //       "five",
-  //       "six",
-  //       "seven",
-  //       "eight",
-  //       "nine",
-  //     ];
+  // function convertToWordsLessThanOneHundred(number) {
+  // const onesWords = [
+  // "",
+  // "one",
+  // "two",
+  // "three",
+  // "four",
+  // "five",
+  // "six",
+  // "seven",
+  // "eight",
+  // "nine",
+  // ];
 
-  //     const teensWords = [
-  //       "ten",
-  //       "eleven",
-  //       "twelve",
-  //       "thirteen",
-  //       "fourteen",
-  //       "fifteen",
-  //       "sixteen",
-  //       "seventeen",
-  //       "eighteen",
-  //       "nineteen",
-  //     ];
+  // const teensWords = [
+  // "ten",
+  // "eleven",
+  // "twelve",
+  // "thirteen",
+  // "fourteen",
+  // "fifteen",
+  // "sixteen",
+  // "seventeen",
+  // "eighteen",
+  // "nineteen",
+  // ];
 
-  //     const tensWords = [
-  //       "",
-  //       "",
-  //       "twenty",
-  //       "thirty",
-  //       "forty",
-  //       "fifty",
-  //       "sixty",
-  //       "seventy",
-  //       "eighty",
-  //       "ninety",
-  //     ];
+  // const tensWords = [
+  // "",
+  // "",
+  // "twenty",
+  // "thirty",
+  // "forty",
+  // "fifty",
+  // "sixty",
+  // "seventy",
+  // "eighty",
+  // "ninety",
+  // ];
 
-  //     if (number < 10) {
-  //       return onesWords[number];
-  //     } else if (number < 20) {
-  //       return teensWords[number - 10];
-  //     } else {
-  //       return tensWords[Math.floor(number / 10)] + " " + onesWords[number % 10];
-  //     }
-  //   }
+  // if (number < 10) {
+  // return onesWords[number];
+  // } else if (number < 20) {
+  // return teensWords[number - 10];
+  // } else {
+  // return tensWords[Math.floor(number / 10)] + " " + onesWords[number % 10];
+  // }
+  // }
 
-  //   function grandTotalInWords(total) {
-  //     return convertToWords(total);
-  //   }
+  // function grandTotalInWords(total) {
+  // return convertToWords(total);
+  // }
 
-  //   console.log(grandTotalInWords(grandTotal));
+  // console.log(grandTotalInWords(grandTotal));
 
-  //   useEffect(() => {
-  //     if (generateNewInvoice) {
-  //       const newInvoiceData = generateNewInvoice();
-  //       console.log("newInvoiceData", newInvoiceData);
-  //       // Use newInvoiceData as needed (e.g., set state, display information, etc.)
-  //     }
-  //   }, [generateNewInvoice]);
-  //   console.log("newInvoiceData", generateNewInvoice);
-  //   generate invoice number ?
-  //   let invoiceCount = 0;
+  // useEffect(() => {
+  // if (generateNewInvoice) {
+  // const newInvoiceData = generateNewInvoice();
+  // console.log("newInvoiceData", newInvoiceData);
+  // // Use newInvoiceData as needed (e.g., set state, display information, etc.)
+  // }
+  // }, [generateNewInvoice]);
+  // console.log("newInvoiceData", generateNewInvoice);
+  // generate invoice number ?
+  // let invoiceCount = 0;
 
-  //   function generateInvoiceNumber() {
-  //     return "INV-" + String(invoiceCount + 1).padStart(6, "0");
-  //   }
+  // function generateInvoiceNumber() {
+  // return "INV-" + String(invoiceCount + 1).padStart(6, "0");
+  // }
 
-  //   // usage
-  //   let invoiceNumber = generateInvoiceNumber();
-  //   console.log(invoiceNumber); // Output: INV-000001
-  //   grandTotal in inwords?
+  // // usage
+  // let invoiceNumber = generateInvoiceNumber();
+  // console.log(invoiceNumber); // Output: INV-000001
+  // grandTotal in inwords?
 
   return (
     <div className="container m-5 ">
@@ -241,7 +260,7 @@ function PrintInvoice() {
               fontWeight: 700,
             }}
           >
-            INVOICE
+            TAX INVOICE
           </h4>
           <div className="d-flex" style={{ justifyContent: "space-between" }}>
             <div className="">
@@ -253,21 +272,22 @@ function PrintInvoice() {
             </div>
             <div className="" style={{ margin: "10px 0px 0px 0px" }}>
               <div className="d-flex invois-order">
-                <div className=" invoice-col-det-left">INVOICE</div>
-
-                <div className=" invoice-col-det-right">#94</div>
+                <div className=" invoice-col-det-left">INVOICE: </div>{" "}
+                <div className="ms-3 invoice-col-det-right">
+                  #{id.slice(-5).toUpperCase()}{" "}
+                </div>
               </div>
 
               <div className="d-flex invois-order">
-                <div className=" invoice-col-det-left">ORDER ID</div>
+                <div className="invoice-col-det-left">ORDER ID: </div>
 
-                <div className=" invoice-col-det-right"> #{id.slice(-5)} </div>
+                <div className="me-3 invoice-col-det-right">#{orderID}</div>
               </div>
 
               <div className="d-flex invois-order">
-                <div className=" invoice-col-det-left">DATE</div>
+                <div className="invoice-col-det-left">DATE: </div>
 
-                <div className=" invoice-col-det-right">
+                <div className="ms-3 invoice-col-det-right">
                   {" "}
                   {moment().format("DD/MM/YYYY")}{" "}
                 </div>
@@ -299,74 +319,85 @@ function PrintInvoice() {
           {/* <br /> */}
 
           {/* <div className="d-flex" style={{ justifyContent: "space-between" }}>
-            <div>
-              <h6 style={{ fontWeight: "600" }}>BILL To:</h6>
-              <address style={{ fontSize: "14px" }}>
-                <div>{customerOrders.guestName} </div>
-                <div>+91 {customerOrders.mobileNumber}</div>
-                <div>{customerOrders.guestEmail}</div>
-              </address>
-            </div>
-            <div className="" style={{ margin: "10px 0px 0px 0px" }}>
-              <div className="row" style={{ fontSize: "1rem" }}>
-                <div className="col-md-6 invoice-col-det-left">INVOICE</div>
-                <div className="col-md-6 invoice-col-det-right">#94</div>
-              </div>
+ <div>
+ <h6 style={{ fontWeight: "600" }}>BILL To:</h6>
+ <address style={{ fontSize: "14px" }}>
+ <div>{customerOrders.guestName} </div>
+ <div>+91 {customerOrders.mobileNumber}</div>
+ <div>{customerOrders.guestEmail}</div>
+ </address>
+ </div>
+ <div className="" style={{ margin: "10px 0px 0px 0px" }}>
+ <div className="row" style={{ fontSize: "1rem" }}>
+ <div className="col-md-6 invoice-col-det-left">INVOICE</div>
+ <div className="col-md-6 invoice-col-det-right">#94</div>
+ </div>
 
-              <div className="row" style={{ fontSize: "1rem" }}>
-                <div className="col-md-6 invoice-col-det-left">ORDER ID</div>
-                <div className="col-md-6 invoice-col-det-right">
-                  {" "}
-                  #{id.slice(-5)}{" "}
-                </div>
-              </div>
+ <div className="row" style={{ fontSize: "1rem" }}>
+ <div className="col-md-6 invoice-col-det-left">ORDER ID</div>
+ <div className="col-md-6 invoice-col-det-right">
+ {" "}
+ #{id.slice(-5)}{" "}
+ </div>
+ </div>
 
-              <div className="row" style={{ fontSize: "1rem" }}>
-                <div className="col-md-6 invoice-col-det-left">
-                  INVOICE DATE
-                </div>
-                <div className="col-md-6 invoice-col-det-right">
-                  {" "}
-                  {moment().format("DD/MM/YYYY")}{" "}
-                </div>
-              </div>
-            </div>
-          </div> */}
+ <div className="row" style={{ fontSize: "1rem" }}>
+ <div className="col-md-6 invoice-col-det-left">
+ INVOICE DATE
+ </div>
+ <div className="col-md-6 invoice-col-det-right">
+ {" "}
+ {moment().format("DD/MM/YYYY")}{" "}
+ </div>
+ </div>
+ </div>
+ </div> */}
           <div className="mt-3">
             <DataTable columns={columns} data={mergedArray} />
           </div>
+          {/* <div
+ className="d-flex"
+ style={{ margin: "17px 0px", justifyContent: "flex-end" }}
+ >
+ <div className=""> */}
           <div
             className="d-flex"
-            style={{ margin: "17px 0px", justifyContent: "flex-end" }}
+            style={{
+              fontSize: "1rem",
+              justifyContent: "space-evenly",
+              margin: "17px 0px",
+            }}
           >
-            <div className="">
-              <div className="d-flex" style={{ fontSize: "1rem" }}>
-                <div className="col-md-6">
-                  <div className="invoice-col-det-final-left m-1">SUBTOTAL</div>{" "}
-                  <div className="invoice-col-det-final-left m-1">TAX(18%)</div>{" "}
-                  <div
-                    className="invoice-col-det-final-left m-1"
-                    style={{ fontSize: "18px" }}
-                  >
-                    TOTAL
-                  </div>{" "}
-                </div>
-                <div className="col-md-6">
-                  <div className="invoice-col-det-final-right m-1">
-                    Rs.{totalAmount.toFixed(2)}
-                  </div>
-                  <div className="invoice-col-det-final-right m-1">
-                    Rs.{findingTax}{" "}
-                  </div>
-                  <div
-                    className="invoice-col-det-final-right m-1"
-                    style={{ fontWeight: "600", fontSize: "18px" }}
-                  >
-                    Rs.{grandTotal}
-                  </div>
-                </div>
+            <div
+              className="d-flex"
+              style={{ justifyContent: "left", alignItems: "center" }}
+            >
+              <img src="/phonepe-qr.jpeg" style={{ width: "25%" }} />
+              {/* <div className="invoice-col-det-final-left m-1">SUBTOTAL</div>{" "}
+ <div className="invoice-col-det-final-left m-1">TAX(15%)</div>{" "}
+ <div
+ className="invoice-col-det-final-left m-1"
+ style={{ fontSize: "18px" }}
+ >
+ TOTAL
+ </div>{" "} */}
+            </div>
+            <div>
+              <div className="invoice-col-det-final-right m-1 d-flex">
+                <span>SUBTOTAL</span> : Rs.{subTotal.toFixed(2)}
+              </div>
+              <div className="invoice-col-det-final-right m-1">
+                <span>TAX(15%)</span> : Rs.{findingTax.toFixed(2)}{" "}
+              </div>
+              <div
+                className="invoice-col-det-final-right m-1"
+                style={{ fontWeight: "600", fontSize: "18px" }}
+              >
+                <span>TOTAL</span> : Rs.{grandTotal.toFixed(2)}
               </div>
             </div>
+            {/* </div>
+ </div> */}
           </div>
         </div>
         <div className="text-center mt-5">
