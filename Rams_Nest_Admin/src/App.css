@@ -202,3 +202,124 @@ input:focus {
     margin: 3mm; /* Set margins to zero */
   }
 }
+
+.rm-input-value1{
+  background-color:lightgrey;
+   padding:8px;
+   margin-top:5px;
+}
+.rm-input-value{
+  background-color:lightgrey;
+   padding:8px;
+   margin-top:5px;
+   color: black;
+   border: 0px !important;
+ 
+}
+.rm-input-label{
+  font-size: 14px;
+  color: black;
+  margin-top: 10px;
+}
+
+.tbl{
+  display: contents;
+     border: 1px solid gray !important;  
+    color: "black",
+}
+.head{
+  color: black;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  padding-top: 10px;
+  text-decoration: underline;
+  font-family: sans-serif;
+}
+.card_button{
+  color: #7c0000;
+    font-size: 15px;
+    font-weight: 600;
+    border: 1px solid #7c0000;
+    text-align: center;
+    padding: 5px;
+    /* width: 250px; */
+    border-radius: 20px;
+}
+.rms-label{
+
+  color: black;
+  font-size: 14px;
+}
+.rms-value{
+  color: black;
+  font-size: 14px;
+}
+.sub{color: brown;
+font-size: 16px;
+font-weight: 600;
+text-align: center;
+margin-top: 20px;
+}
+.sub1{
+color: #bfa31f;
+font-size: 12px;
+font-weight: 600;
+text-align: center;
+}
+.heading{
+  color: brown;
+  font-size:15px;
+}
+.desc{
+  color:grey;
+  font-size: 13px;
+}
+.desc1{
+  color: brown;
+  font-size:13px;
+  text-align: center;
+  font-weight: 600;
+  margin-top: 10px;
+}
+.heading1{
+  color: black;
+  font-size: 15px;
+  text-align: center;
+}
+a{
+  text-decoration: none !important;
+}
+@media print {
+ 
+  .print-section {
+    border: 5px solid black;
+    padding: 10px;
+    
+  }
+  .colrow{
+    display: flex !important;
+  }
+  .card_button{
+    color: #7c0000;
+      font-size: 15px;
+      font-weight: 600;
+      border: 1px solid #7c0000;
+      text-align: center;
+      padding: 5px;
+      width: 250px;
+      border-radius: 20px;
+      align-items: center !important;
+      margin-left: 30%;
+  }
+  .cbutton{
+    align-items: start !important;
+    display: flex !important;
+    justify-content: start;
+    width: "100%";
+    margin-left: "50%";
+    margin-right: "50%";
+  }
+
+  
+}

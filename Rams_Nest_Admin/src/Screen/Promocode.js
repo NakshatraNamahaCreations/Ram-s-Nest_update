@@ -24,7 +24,7 @@ function Promocode() {
   const { SearchBar, ClearSearchButton } = Search;
   const { ExportCSVButton } = CSVExport;
   const apiURL = "https://api.ramsnesthomestay.com/api";
-  const imageURL = "https://api.ramsnesthomestay.com";
+  const imageURL = "https://api.ramsnesthomestay.com/api";
 
   const showModal = () => {
     setIsOpen(true);

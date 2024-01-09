@@ -161,7 +161,7 @@ function CustomerOrderHistoryDetails() {
                   <div class="d-flex align-items-center mb-2">
                     <img
                       class="me-2"
-                      src={`https://api.ramsnesthomestay.com/food/${items.foodimage}`}
+                      src={`https://api.ramsnesthomestay.com/api/food/${items.foodimage}`}
                       alt=""
                     />
                     <div class="order-items">

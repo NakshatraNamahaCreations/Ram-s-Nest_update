@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 
 function Rooms() {
   const { SearchBar, ClearSearchButton } = Search;
-  const imageURL = "https://api.ramsnesthomestay.com";
+  const imageURL = "https://api.ramsnesthomestay.com/api";
   const [packages, setpackages] = useState([]);
   const formdata = new FormData();
   const { ExportCSVButton } = CSVExport;
@@ -48,7 +48,8 @@ function Rooms() {
           <div>
             <img
               src={
-                "https://api.ramsnesthomestay.com/package/" + row.packageimage
+                "https://api.ramsnesthomestay.com/api/package/" +
+                row.packageimage
               }
               width="45px"
               height="45px"

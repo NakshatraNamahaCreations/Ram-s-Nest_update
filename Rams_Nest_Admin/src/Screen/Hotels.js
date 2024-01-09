@@ -20,10 +20,12 @@ import { DownloadTableExcel } from "react-export-table-to-excel";
 function Rooms() {
   const [isOpen, setIsOpen] = useState(false);
   const { SearchBar, ClearSearchButton } = Search;
-  const imageURL = "https://api.ramsnesthomestay.com";
+  const imageURL = "https://api.ramsnesthomestay.com/api";
   const [rooms, setrooms] = useState([]);
   const formdata = new FormData();
   const { ExportCSVButton } = CSVExport;
+
+  console.log("rooms=====", rooms);
 
   const remove = async (data) => {
     axios({
@@ -40,6 +42,7 @@ function Rooms() {
         console.log(error.response.data);
       });
   };
+
   const columns = [
     {
       dataField: "roomno",
@@ -63,7 +66,7 @@ function Rooms() {
           <div>
             {row.roomimage?.map((i) => (
               <img
-                src={"https://api.ramsnesthomestay.com/rooms/" + i}
+                src={"https://api.ramsnesthomestay.com/api/rooms/" + i}
                 width="45px"
                 height="45px"
               />
@@ -76,7 +79,10 @@ function Rooms() {
       dataField: "roomdesc",
       text: "Room Desc",
     },
-
+    {
+      dataField: "Address",
+      text: "address",
+    },
     {
       dataField: "",
       text: "Action",

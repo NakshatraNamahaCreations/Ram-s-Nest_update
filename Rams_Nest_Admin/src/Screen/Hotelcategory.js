@@ -14,7 +14,7 @@ import axios from "axios";
 import { useEffect } from "react";
 
 function Category() {
-  const imageURL = "https://api.ramsnesthomestay.com";
+  const imageURL = "https://api.ramsnesthomestay.com/api";
   const apiURL = "https://api.ramsnesthomestay.com/api";
   const [categoryname, setcategoryname] = useState("");
   const [categoryimage, setcategoryimage] = useState("");

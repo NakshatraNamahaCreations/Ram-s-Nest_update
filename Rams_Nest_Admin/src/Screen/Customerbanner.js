@@ -212,7 +212,8 @@ function Customerbanner() {
                   <td>
                     <img
                       src={
-                        "https://api.ramsnesthomestay.com/banner/" + item.banner
+                        "https://api.ramsnesthomestay.com/api/banner/" +
+                        item.banner
                       }
                       style={{ width: "80px", height: "70px" }}
                     />

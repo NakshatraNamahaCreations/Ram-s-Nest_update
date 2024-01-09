@@ -36,7 +36,7 @@ function Rooms() {
   const [foodname, setfoodname] = useState("");
   const [showEdit, setShowEdit] = useState(false);
 
-  const imageURL = "https://api.ramsnesthomestay.com";
+  const imageURL = "https://api.ramsnesthomestay.com/api";
   const apiURL = "https://api.ramsnesthomestay.com/api";
 
   const showModal = (row) => {
@@ -113,7 +113,7 @@ function Rooms() {
         return (
           <div>
             <img
-              src={`https://api.ramsnesthomestay.com/food/${row.foodimage}`}
+              src={`https://api.ramsnesthomestay.com/api/food/${row.foodimage}`}
               alt={`Food Image`}
               style={{ width: "60px", height: "60px", borderRadius: "100%" }}
             />
@@ -169,7 +169,7 @@ function Rooms() {
   //         <div>
   //           {row.foodimage?.map((i) => (
   //             <img
-  //               src={"https://api.ramsnesthomestay.com/food/" + i}
+  //               src={"https://api.ramsnesthomestay.com/api/food/" + i}
   //               width="45px"
   //               height="45px"
   //             />
@@ -320,6 +320,7 @@ function Rooms() {
       });
     } catch (error) {
       console.log(error);
+      alert("Image size is too large");
     }
   };
   console.log("foodImage", foodImage);
@@ -426,7 +427,7 @@ function Rooms() {
                     />
                   ) : (
                     <img
-                      src={`https://api.ramsnesthomestay.com/food/${categoryObjects.foodimage}`}
+                      src={`https://api.ramsnesthomestay.com/api/food/${categoryObjects.foodimage}`}
                       alt=""
                       width="100"
                       height="100"

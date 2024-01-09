@@ -49,7 +49,7 @@
             >
               <img
                 class="me-2"
-                src={`https://api.ramsnesthomestay.com/food/${items.foodimage}`}
+                src={`https://api.ramsnesthomestay.com/api/food/${items.foodimage}`}
                 alt=""
               />
             </div>

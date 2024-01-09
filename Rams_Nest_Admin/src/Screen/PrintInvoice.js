@@ -95,9 +95,11 @@ function PrintInvoice() {
 
   // console.log("mergedArray", mergedArray);
   console.log("subTotal", subTotal);
-  const findingTax = (15 / 100) * subTotal;
-  const grandTotal = subTotal + parseInt(findingTax);
-  // console.log("grandTotal", grandTotal, "findingTax", findingTax);
+  const findingCGST = (2.5 / 100) * subTotal;
+  const findingSGST = (2.5 / 100) * subTotal;
+  const GST = findingCGST + findingSGST;
+  const grandTotal = subTotal + GST;
+  console.log("grandTotal", grandTotal, "cgst", GST);
 
   const columns = [
     {
@@ -387,7 +389,10 @@ function PrintInvoice() {
                 <span>SUBTOTAL</span> : Rs.{subTotal.toFixed(2)}
               </div>
               <div className="invoice-col-det-final-right m-1">
-                <span>TAX(15%)</span> : Rs.{findingTax.toFixed(2)}{" "}
+                <span>CGST(2.50%)</span> : Rs.{findingCGST.toFixed(2)}{" "}
+              </div>
+              <div className="invoice-col-det-final-right m-1">
+                <span>SGST(2.50%)</span> : Rs.{findingSGST.toFixed(2)}{" "}
               </div>
               <div
                 className="invoice-col-det-final-right m-1"

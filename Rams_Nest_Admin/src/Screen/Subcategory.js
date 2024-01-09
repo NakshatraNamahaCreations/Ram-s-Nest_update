@@ -15,7 +15,7 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { useEffect } from "react";
 
 function Category() {
-  const imageURL = "https://api.ramsnesthomestay.com";
+  const imageURL = "https://api.ramsnesthomestay.com/api";
   const apiURL = "https://api.ramsnesthomestay.com/api";
   const [subcategoryname, setsubcategoryname] = useState("");
   const [categoryname, setcategoryname] = useState("");

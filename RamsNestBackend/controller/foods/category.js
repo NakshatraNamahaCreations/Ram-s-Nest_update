@@ -45,6 +45,40 @@ class category {
     const data = await categoryModel.deleteOne({ _id: id });
     return res.json({ sucess: "Successfully" });
   }
+
+  async editCategory(req, res) {
+    try {
+      let id = req.params.id;
+      let { categoryname, categoryType } = req.body;
+      console.log("Received data:", req.body);
+      let file = req.file ? req.file.filename : null;
+      const findCategory = await categoryModel.findOne({ _id: id });
+      if (!findCategory) {
+        return res.status(401).json({ error: "No Category Found" });
+      }
+      findCategory.categoryname = categoryname || findCategory.categoryname;
+      findCategory.categoryType = categoryType || findCategory.categoryType;
+      if (file) findCategory.categoryimage = file;
+      let updatedData = await categoryModel.findOneAndUpdate(
+        { _id: id },
+        findCategory,
+        { new: true }
+      );
+      console.log("updatedData", updatedData);
+      if (updatedData) {
+        return res
+          .status(200)
+          .json({ message: "Updated successfully", data: updatedData });
+      } else {
+        return res.status(500).json({ status: false, msg: "Failed to update" });
+      }
+    } catch (error) {
+      console.log("error", error);
+      return res
+        .status(500)
+        .json({ error: "Unable to update the details! Try again later" });
+    }
+  }
 }
 
 const categorycontroller = new category();

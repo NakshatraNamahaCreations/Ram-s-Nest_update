@@ -71,7 +71,12 @@ function Sidebar() {
             {/* <MenuItem icon={<FaCamera />}>
               Notification<Link to="/notification"></Link>
             </MenuItem> */}
-
+            <MenuItem icon={<FaUser />}>
+              Enquiry<Link to="/enquiry"></Link>
+            </MenuItem>
+            <MenuItem icon={<FaUser />}>
+              Rooms Customers<Link to="/roomcustomer"></Link>
+            </MenuItem>
             <MenuItem icon={<FaUser />}>
               Customers<Link to="/customer"></Link>
             </MenuItem>

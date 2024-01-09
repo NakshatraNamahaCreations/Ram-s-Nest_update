@@ -55,7 +55,7 @@ function Customers() {
         .get("https://api.ramsnesthomestay.com/api/orders/getcustomerbooking")
         .then(function (response) {
           if (response.status === 200) {
-            setdata(response.data.customerDetails);
+            setdata(response.data.customerDetails.reverse());
             return;
           } else {
             alert("Can't able to fetch ");

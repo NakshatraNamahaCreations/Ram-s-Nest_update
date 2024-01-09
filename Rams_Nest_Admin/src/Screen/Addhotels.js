@@ -15,6 +15,7 @@ function Addfood() {
   const [roomprice, setroomprice] = useState("");
   const [maxcount, setmaxcount] = useState("");
   const [roomno, setroomno] = useState("");
+  const [address, setaddress] = useState("");
   const [roomfeature, setroomfeature] = useState("");
   const formdata = new FormData();
 
@@ -34,6 +35,7 @@ function Addfood() {
     formdata.append("roomprice", roomprice);
     formdata.append("maxcount", maxcount);
     formdata.append("roomno", roomno);
+    formdata.append("address", address);
     formdata.append("roomfeature", roomfeature);
     try {
       const config = {
@@ -138,6 +140,15 @@ function Addfood() {
                         label="room Price"
                         style={{ width: "275px" }}
                         onChange={(e) => setroomprice(e.target.value)}
+                      />
+                    </div>
+
+                    <div className="mt col-4">
+                      <TextField
+                        id="standard-secondary"
+                        label="address"
+                        style={{ width: "275px" }}
+                        onChange={(e) => setaddress(e.target.value)}
                       />
                     </div>
                   </div>

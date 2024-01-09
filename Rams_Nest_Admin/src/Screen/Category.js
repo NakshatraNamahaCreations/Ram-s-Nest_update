@@ -14,17 +14,29 @@ import { useEffect } from "react";
 import { TfiImport } from "react-icons/tfi";
 
 function Category() {
-  const imageURL = "https://api.ramsnesthomestay.com";
+  const imageURL = "https://api.ramsnesthomestay.com/api";
   const apiURL = "https://api.ramsnesthomestay.com/api";
   const [categoryname, setcategoryname] = useState("");
   const [categoryimage, setcategoryimage] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+  const [dishType, setDishType] = useState("");
+
+  const [editcategoryname, seteditcategoryname] = useState();
+  const [editcategoryimage, seteditcategoryimage] = useState("");
+  const [editdishType, seteditDishType] = useState("");
+
   const [categorydata, setcategorydata] = useState([]);
+  const [categoryObjects, setCategoryObjects] = useState({});
   const formdata = new FormData();
   const { SearchBar, ClearSearchButton } = Search;
   const { ExportCSVButton } = CSVExport;
   const [data, setData] = useState([]);
-  const [dishType, setDishType] = useState("");
+  const [showEdit, setShowEdit] = useState(false);
+
+  const showModal = (row) => {
+    setShowEdit(true);
+    setCategoryObjects(row);
+  };
+  console.log("categoryObjects", categoryObjects);
 
   useEffect(() => {
     getcategory();
@@ -56,13 +68,7 @@ function Category() {
       }
     }
   };
-  const showModal = () => {
-    setIsOpen(true);
-  };
 
-  const hideModal = () => {
-    setIsOpen(false);
-  };
   useEffect(() => {
     getcategory();
   }, []);
@@ -138,6 +144,12 @@ function Category() {
               onClick={() => remove(row)}
               style={{ color: "red", cursor: "pointer" }}
             ></i>
+            {/* <i
+              title="Edit"
+              class="fa-regular fa-pen-to-square ms-2"
+              style={{ cursor: "pointer" }}
+              onClick={() => showModal(row)}
+            ></i> */}
           </div>
         );
       },
@@ -180,6 +192,32 @@ function Category() {
     ], // A numeric array is also available. the purpose of above example is custom the text
   };
 
+  const editCategory = async (e) => {
+    e.preventDefault();
+    formdata.append("categoryname", editcategoryname);
+    formdata.append("categoryimage", editcategoryimage);
+    formdata.append("categoryType", editdishType);
+    try {
+      const config = {
+        method: "put",
+        url: `https://api.ramsnesthomestay.com/api/editcategory/${categoryObjects._id}`,
+        headers: {
+          "Content-Type": "multipart/form-data", // Make sure to set the content type
+        },
+        data: formdata,
+      };
+      await axios(config).then(function (response) {
+        console.log(response.data); // Log the response for debugging
+        if (response.status === 200) {
+          console.log(response.data);
+          window.location.reload();
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="row me-0">
       <Header />
@@ -189,50 +227,123 @@ function Category() {
       <div className="col-md-10 v1">
         <div className="row me-0">
           <div className="col-md-4">
-            <div
-              style={{
-                padding: "20px",
-                // boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
-              }}
-            >
-              <h5 className="pt-5"> Add Category</h5>
-              <div className="form-group">
-                <label className="mt-2"> Category Name</label>
-                <input
-                  type="text"
-                  placeholder="Enter Category Name"
-                  className="form-control mt-2 mb-2"
-                  onChange={(e) => setcategoryname(e.target.value)}
-                ></input>
-              </div>
-              <div className="form-group">
-                <label className="mt-2"> Category Type</label>
-                <select
-                  className="form-control mt-2 mb-2"
-                  onChange={(e) => setDishType(e.target.value)}
-                >
-                  <option value="">Select...</option>
-                  <option value="Common">Common</option>
-                  <option value="Veg">Veg</option>
-                  <option value="Non Veg">Non Veg</option>
-                </select>
-              </div>{" "}
-              <div className="form-group">
-                <label className="mt-2"> Category Image</label>
-                <input
-                  type="file"
-                  placeholder="Enter Category Name"
-                  className="form-control mt-2 mb-2"
-                  onChange={(e) => setcategoryimage(e.target.files[0])}
-                ></input>
-              </div>
-              <button
-                className="btn btn-outline-primary mt-4"
-                onClick={addCategory}
+            {showEdit ? (
+              <div
+                style={{
+                  padding: "20px",
+                  // boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
+                }}
               >
-                Add Category
-              </button>
-            </div>
+                <h5 className="pt-5"> Edit</h5>
+                <div>
+                  <lable className="mt-3">Enter Dish Name</lable>
+                  <input
+                    className="form-control mt-2 mb-2"
+                    onChange={(e) => seteditcategoryname(e.target.value)}
+                    defaultValue={categoryObjects.categoryname}
+                  />
+                </div>
+                <div>
+                  <lable className="mt-3">Category Type</lable>
+                  <select
+                    className="form-control mt-2 mb-2"
+                    onChange={(e) => seteditDishType(e.target.value)}
+                    defaultValue={categoryObjects.categoryType}
+                  >
+                    <option value="">Select...</option>
+                    <option value="Common">Common</option>
+                    <option value="Veg">Veg</option>
+                    <option value="Non Veg">Non Veg</option>
+                  </select>
+                </div>
+                <div>
+                  <lable className="">Category Image</lable>
+                  <br />
+                  <input
+                    className="form-control mt-2 mb-2"
+                    type="file"
+                    name="foodimage"
+                    onChange={(e) => seteditcategoryimage(e.target.files[0])}
+                  />
+                  <br />
+                  {categoryimage ? (
+                    <img
+                      src={URL.createObjectURL(categoryimage)}
+                      width="100"
+                      height="100"
+                      alt=""
+                    />
+                  ) : (
+                    <img
+                      src={`https://api.ramsnesthomestay.com/api/category/${categoryObjects.categoryimage}`}
+                      alt=""
+                      width="100"
+                      height="100"
+                    />
+                  )}
+                </div>
+                <button
+                  className="btn btn-outline-primary mt-4"
+                  onClick={editCategory}
+                >
+                  Edit Category
+                </button>
+              </div>
+            ) : (
+              <div
+                style={{
+                  padding: "20px",
+                  // boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
+                }}
+              >
+                <h5 className="pt-5"> Add Category</h5>
+                <div className="form-group">
+                  <label className="mt-2"> Category Name</label>
+                  <input
+                    type="text"
+                    placeholder="Enter Category Name"
+                    className="form-control mt-2 mb-2"
+                    onChange={(e) => setcategoryname(e.target.value)}
+                  ></input>
+                </div>
+                <div className="form-group">
+                  <label className="mt-2"> Category Type</label>
+                  <select
+                    className="form-control mt-2 mb-2"
+                    onChange={(e) => setDishType(e.target.value)}
+                  >
+                    <option value="">Select...</option>
+                    <option value="Common">Common</option>
+                    <option value="Veg">Veg</option>
+                    <option value="Non Veg">Non Veg</option>
+                  </select>
+                </div>{" "}
+                <div className="form-group">
+                  <label className="mt-2"> Category Image</label>
+                  <input
+                    type="file"
+                    placeholder="Enter Category Name"
+                    className="form-control mt-2 mb-2"
+                    onChange={(e) => setcategoryimage(e.target.files[0])}
+                  ></input>
+                  <br />
+                  {categoryimage && (
+                    <img
+                      src={URL.createObjectURL(categoryimage)}
+                      width="100"
+                      height="100"
+                      alt=""
+                    />
+                  )}
+                </div>
+                <button
+                  className="btn btn-outline-primary mt-4"
+                  onClick={addCategory}
+                >
+                  Add Category
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="col-md-8">
